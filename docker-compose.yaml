@@ -1,0 +1,16 @@
+version: "3"
+services:
+  db:
+    image: postgres
+    container_name: lesson
+    ports:
+     - "5435:5432"
+    volumes:
+     - ./docker-data/db-data:/var/lib/postresql/data 
+    environment:
+    - POSTGRES_USER=admin
+    - POSTGRES_PASSWORD=admin1
+    - POSTGRES_DB=future
+    - POSTGRES_HOST=localhost
+    command: postgres
+    restart: always
