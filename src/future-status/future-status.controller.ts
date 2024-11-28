@@ -14,4 +14,9 @@ export class FutureStatusController {
   async createStatus(@Body('name') name: string) {
     return this.futureStatusService.createStatus(name);
   }
+
+  @Get('/find/:id')
+  async getStatusById(@Param('id') id: number) {
+    return this.futureStatusService.getStatusById(id);
+  }
 }

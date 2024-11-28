@@ -11,7 +11,7 @@ import { JwtModule } from '@nestjs/jwt';
   imports: [
     SequelizeModule.forFeature([User]),
     JwtModule.register({
-      secret: 'Ural Federal University',
+      secret: 'Ural_Federal_University',
       signOptions: {
         expiresIn: '24h',
       },

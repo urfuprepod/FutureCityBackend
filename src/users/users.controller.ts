@@ -9,8 +9,8 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get('/all')
-  async getUsers(@Query() pagination: PaginationDto) {
-    return await this.usersService.getUsers(pagination);
+  async getUsers(@Query('page') page: string) {
+    return await this.usersService.getUsers(+page);
   }
 
   @Post('/login')

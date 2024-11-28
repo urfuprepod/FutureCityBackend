@@ -21,6 +21,11 @@ export class FutureStatusService {
     return status;
   }
 
+  async getStatusById(id: number) {
+    const status = await this.futureStatusRepository.findByPk(id);
+    return status
+  }
+
   async createStatus(name: string) {
     const status = await this.futureStatusRepository.create({ name });
     return status;

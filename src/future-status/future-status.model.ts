@@ -1,6 +1,6 @@
 import { Table, Column, DataType, Model, HasMany } from "sequelize-typescript";
+import { Document } from "src/documents/documents.model";
 import { Tag } from "src/tags/tags.model";
-import { User } from "src/users/users.model";
 
 
 @Table({ tableName: 'futureStatus', timestamps: false })
@@ -19,4 +19,6 @@ export class FutureStatus extends Model<FutureStatus, {name: string}> {
   @HasMany(() => Tag)
   tags: Tag[];
 
+  @HasMany(() => Document)
+  documents: Document[];
 }

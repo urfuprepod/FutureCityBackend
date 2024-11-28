@@ -2,20 +2,19 @@ import {
   BelongsTo,
   Column,
   DataType,
+  ForeignKey,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { FutureStatus } from 'src/future-status/future-status.model';
 
-interface UserCreationAttrs {
-  login: string;
-  password: string;
-  lastName: string;
-  firstName: string;
+interface TagCreationAttrs {
+  name: string;
+  futureStatusId: number;
 }
 
 @Table({ tableName: 'tags' })
-export class Tag extends Model<Tag, UserCreationAttrs> {
+export class Tag extends Model<Tag, TagCreationAttrs> {
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -26,6 +25,10 @@ export class Tag extends Model<Tag, UserCreationAttrs> {
 
   @Column({ type: DataType.STRING, unique: true, allowNull: false })
   name: string;
+
+  @ForeignKey(() => FutureStatus)
+  @Column({ type: DataType.INTEGER })
+  futureStatusId: number;
 
   @BelongsTo(() => FutureStatus)
   status: FutureStatus;

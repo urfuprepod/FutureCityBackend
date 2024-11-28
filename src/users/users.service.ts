@@ -43,8 +43,8 @@ export class UsersService {
     await user.save();
     return user;
   }
-  async getUsers(pagination: PaginationDto) {
-    const offset = (pagination.page - 1) * 10;
+  async getUsers(page: number) {
+    const offset = (page - 1) * 10;
 
     const { rows: users, count: total } =
       await this.userRepository.findAndCountAll({
@@ -55,7 +55,7 @@ export class UsersService {
     return {
       users,
       total,
-      page: pagination.page,
+      page,
       totalPages: Math.ceil(total / 10),
     };
   }
@@ -73,12 +73,19 @@ export class UsersService {
   }
 
   private async validateUser(loginDto: LoginUserDto) {
-    const user = await this.userRepository.findOne({where: {login: loginDto.login}})
-    const passwordEquals = await bcrypt.compare(loginDto.password, user.password);
+    const user = await this.userRepository.findOne({
+      where: { login: loginDto.login },
+    });
+    const passwordEquals = await bcrypt.compare(
+      loginDto.password,
+      user.password,
+    );
     if (user && passwordEquals) {
-        return user;
+      return user;
     }
 
-    throw new UnauthorizedException({message: 'Неверно введен логин или пароль'})
+    throw new UnauthorizedException({
+      message: 'Неверно введен логин или пароль',
+    });
   }
 }
