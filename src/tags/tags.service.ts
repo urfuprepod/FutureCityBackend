@@ -11,11 +11,16 @@ export class TagsService {
     private futureStatusService: FutureStatusService,
   ) {}
 
-  async getTagsByFutureStatus(status: string) {
+  async getTagsByFutureStatus(status?: string) {
     const tags = await this.tagRepository.findAll({
-      where: { status: { name: status } },
+      where: status ? { status: { name: status } } : {},
       include: [{ all: true }],
     });
+    return tags;
+  }
+
+  async getAllTags() {
+    const tags = await this.tagRepository.findAll();
     return tags;
   }
 

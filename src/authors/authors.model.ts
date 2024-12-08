@@ -28,7 +28,7 @@ export class Author extends Model<Author, AuthCreationAttrs> {
   fullName: string;
 
   @Column({ type: DataType.TEXT, allowNull: true })
-  @Column({ type: DataType.STRING })
+  @Column({ type: DataType.STRING, allowNull: true })
   avatarUrl?: string;
 
   @BelongsToMany(() => Document, () => AuthorsDocuments)

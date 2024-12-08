@@ -5,10 +5,10 @@ import { FutureStatusService } from './future-status.service';
 export class FutureStatusController {
   constructor(private readonly futureStatusService: FutureStatusService) {}
 
-  @Get(':name')
-  async getStatusByName(@Param('name') name: string) {
-    return this.futureStatusService.getStatusByName(name);
-  }
+  // @Get('/:name')
+  // async getStatusByName(@Param('name') name: string) {
+  //   return this.futureStatusService.getStatusByName(name);
+  // }
 
   @Post('/create')
   async createStatus(@Body('name') name: string) {
@@ -18,5 +18,10 @@ export class FutureStatusController {
   @Get('/find/:id')
   async getStatusById(@Param('id') id: number) {
     return this.futureStatusService.getStatusById(id);
+  }
+
+  @Get('/all')
+  async getAllStatuses() {
+    return this.futureStatusService.getAllStatuses();
   }
 }

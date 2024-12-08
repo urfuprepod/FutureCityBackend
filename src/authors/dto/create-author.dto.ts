@@ -5,7 +5,6 @@ import { Min } from 'sequelize-typescript';
 export class CreateAuthorDto {
   @IsString({ message: 'Имя должно быть строкой' })
   @Transform(({ value }) => value.trim())
-  @Min(3)
   fullName: string;
 
   @IsOptional()

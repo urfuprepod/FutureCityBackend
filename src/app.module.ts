@@ -8,9 +8,22 @@ import { FutureStatusModule } from './future-status/future-status.module';
 import { DocumentsModule } from './documents/documents.module';
 import { AuthorsModule } from './authors/authors.module';
 import { FilesModule } from './files/files.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import * as path from 'path';
 
 @Module({
-  imports: [UsersModule, databaseModule, TagsModule, FutureStatusModule, DocumentsModule, AuthorsModule, FilesModule],
+  imports: [
+    UsersModule,
+    databaseModule,
+    TagsModule,
+    FutureStatusModule,
+    DocumentsModule,
+    AuthorsModule,
+    FilesModule,
+    ServeStaticModule.forRoot({
+      rootPath: path.resolve(__dirname, 'static'),
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

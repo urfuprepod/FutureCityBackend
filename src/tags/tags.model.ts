@@ -1,5 +1,6 @@
 import {
   BelongsTo,
+  BelongsToMany,
   Column,
   DataType,
   ForeignKey,
@@ -7,6 +8,8 @@ import {
   Table,
 } from 'sequelize-typescript';
 import { FutureStatus } from 'src/future-status/future-status.model';
+import { Document } from 'src/documents/documents.model';
+import { DocumentsTags } from 'src/documents/documents-tags.model';
 
 interface TagCreationAttrs {
   name: string;
@@ -32,4 +35,8 @@ export class Tag extends Model<Tag, TagCreationAttrs> {
 
   @BelongsTo(() => FutureStatus)
   status: FutureStatus;
+
+  @BelongsToMany(() => Document, () => DocumentsTags)
+  documents: Document[];
+
 }

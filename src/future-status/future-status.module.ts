@@ -10,5 +10,6 @@ import { FutureStatus } from './future-status.model';
   controllers: [FutureStatusController],
   providers: [FutureStatusService],
   imports: [SequelizeModule.forFeature([Tag, Document, FutureStatus])],
+  exports: [FutureStatusService]
 })
 export class FutureStatusModule {}

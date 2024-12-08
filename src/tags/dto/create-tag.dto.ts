@@ -7,6 +7,5 @@ export class CreateTagDto {
   name: string;
 
   @IsInt()
-  @Min(0)
   futureStatusId: number;
 }

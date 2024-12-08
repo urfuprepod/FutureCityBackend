@@ -9,5 +9,5 @@ export const databaseModule = SequelizeModule.forRoot({
     password: "admin1",
     database: "future-city",
     autoLoadModels: true,
-    
+    synchronize: true
 })

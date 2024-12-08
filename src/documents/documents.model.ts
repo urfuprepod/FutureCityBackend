@@ -12,6 +12,7 @@ import { Author } from 'src/authors/authors.model';
 import { FutureStatus } from 'src/future-status/future-status.model';
 import { Tag } from 'src/tags/tags.model';
 import { AuthorsDocuments } from './documents-authors.model';
+import { DocumentsTags } from './documents-tags.model';
 
 interface DocumentCreationAttr {
   title: string;
@@ -41,7 +42,7 @@ export class Document extends Model<Document, DocumentCreationAttr> {
   @Column({ type: DataType.STRING, allowNull: false })
   file: string;
 
-  @HasMany(() => Tag)
+  @BelongsToMany(() => Tag, () => DocumentsTags)
   tags: Tag[];
 
   @ForeignKey(() => FutureStatus)

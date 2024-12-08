@@ -18,13 +18,13 @@ export class DocumentsService {
   async getDocuments(params: Pagination, statusId?: number) {
     const { page, limit, search } = params;
 
+    console.log(search, 'sex')
     const documents = await this.documentRepository.findAndCountAll({
-      where: {
-        status: statusId ? { id: statusId } : true,
-        title: {
-          [Op.iLike]: search ?? '',
-        },
-      },
+      // where: {
+      //       title: {
+      //         [Op.iLike]: search ?? '',
+      //       },
+      //     },
       include: [{ all: true }],
       offset: (page - 1) * limit,
       limit,
@@ -32,17 +32,18 @@ export class DocumentsService {
     return documents;
   }
 
-  async createDocument(dto: CreateDocumentDto, image: any) {
-    console.log(image);
-    const fileName = await this.fileService.createFile(image);
+  async createDocument( file: any) {
+    // console.log('жопа', file, dto);
+    // const fileName = await this.fileService.createFile(file);
+    console.log(file[0].path, typeof file[0].path, 'выеб фаила')
     const document = await this.documentRepository.create({
-      ...dto,
-      tags: dto.tagIds,
-      file: fileName,
+      title: 'отсоси мои яички4',
+      tags: [],
+      year: 2024,
+      futureStatusId: 0,
+      file: file[0].filename,
     });
-    const currentStatus = await this.futureStatusService.getStatusById(
-      dto.status,
-    );
+    const currentStatus = await this.futureStatusService.getStatusById(0);
     currentStatus.$add('documents', document.id);
     return document;
   }
@@ -67,5 +68,17 @@ export class DocumentsService {
     }
     await document.destroy();
     return true;
+  }
+
+  async getDocumentsByAuthorId(authorId: number) {
+    const documents = await this.documentRepository.findAll({
+      where: {
+        authors: {
+          id: authorId,
+        },
+      },
+      include: [{ all: true }],
+    });
+    return documents;
   }
 }

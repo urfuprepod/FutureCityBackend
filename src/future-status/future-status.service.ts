@@ -23,11 +23,17 @@ export class FutureStatusService {
 
   async getStatusById(id: number) {
     const status = await this.futureStatusRepository.findByPk(id);
-    return status
+    return status;
   }
 
   async createStatus(name: string) {
     const status = await this.futureStatusRepository.create({ name });
     return status;
+  }
+
+  async getAllStatuses() {
+    console.log('sex')
+    const statuses = await this.futureStatusRepository.findAll();
+    return statuses;
   }
 }

@@ -4,21 +4,28 @@ import { Max } from 'sequelize-typescript';
 
 const currentYear = new Date().getFullYear();
 
+// export class CreateDocumentDto {
+//   @IsString({ message: 'Должно быть строкой' })
+//   @Transform(({ value }) => value.trim())
+//   title: string;
+
+//   @IsInt()
+//   year: number;
+
+//   @IsArray()
+//   // @ValidateNested({ each: true })
+//   tagIds: number[];
+
+//   @IsString()
+//   file: string;
+
+//   @IsInt()
+//   futureStatusId: number;
+// }
+
 export class CreateDocumentDto {
-  @IsString({ message: 'Должно быть строкой' })
-  @Transform(({ value }) => value.trim())
   title: string;
-
-  @IsInt()
-  @Min(1900)
-  @Max(currentYear)
-  year: number;
-
-  @IsArray()
-  @ValidateNested({ each: true })
-  tagIds: number[];
-
-  @IsInt()
-  @Min(0)
-  status: number;
+  year: string;
+  tagIds: string[];
+  futureStatusId: string;
 }
