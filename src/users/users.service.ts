@@ -4,7 +4,6 @@ import { User } from './users.model';
 import { CreateUserDto } from './dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
-import { PaginationDto } from './dto/pagination.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
@@ -34,12 +33,12 @@ export class UsersService {
     return this.generateToken(candidate);
   }
 
-  async setAdmin(login: string) {
-    const user = await this.userRepository.findOne({ where: { login } });
+  async toggleAdmin(id: number) {
+    const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
       throw new Error('Пользователь не найден');
     }
-    user.isAdmin = true;
+    user.isAdmin = !user.isAdmin;
     await user.save();
     return user;
   }
@@ -60,15 +59,26 @@ export class UsersService {
     };
   }
 
+  async getUserByToken(token: string) {
+    const [bearer, cur] = token.split(' ');
+    if (!bearer || bearer !== 'Bearer') {
+      throw new Error('Invalid token');
+    }
+    const decodedPayload = this.jwtService.verify(cur);
+    return decodedPayload;
+  }
+
   private async generateToken(user: User) {
     const payload = {
       login: user.login,
       id: user.id,
       lastName: user.lastName,
       firstName: user.firstName,
+      isAdmin: user.isAdmin,
     };
     return {
       token: this.jwtService.sign(payload),
+      user,
     };
   }
 

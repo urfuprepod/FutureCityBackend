@@ -12,6 +12,7 @@ interface AuthCreationAttrs {
   fullName: string;
   avatarUrl?: string;
   biography?: string;
+  documents?: number[]
 }
 
 @Table({ tableName: 'authors' })
@@ -28,6 +29,8 @@ export class Author extends Model<Author, AuthCreationAttrs> {
   fullName: string;
 
   @Column({ type: DataType.TEXT, allowNull: true })
+  biography?: string
+
   @Column({ type: DataType.STRING, allowNull: true })
   avatarUrl?: string;
 

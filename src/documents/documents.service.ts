@@ -17,25 +17,24 @@ export class DocumentsService {
 
   async getDocuments(params: Pagination, statusId?: number) {
     const { page, limit, search } = params;
-
-    console.log(search, 'sex')
-    const documents = await this.documentRepository.findAndCountAll({
-      // where: {
-      //       title: {
-      //         [Op.iLike]: search ?? '',
-      //       },
-      //     },
-      include: [{ all: true }],
-      offset: (page - 1) * limit,
-      limit,
-    });
+    // const documents = await this.documentRepository.findAndCountAll({
+    //   // where: {
+    //   //       title: {
+    //   //         [Op.iLike]: search ?? '',
+    //   //       },
+    //   //     },
+    //   include: [{ all: true }],
+    //   offset: 5000,
+    //   limit,
+    // });
+    const documents = await this.documentRepository.findAll();
+    console.log(documents,'deddede')
     return documents;
   }
 
   async createDocument( file: any) {
     // console.log('жопа', file, dto);
     // const fileName = await this.fileService.createFile(file);
-    console.log(file[0].path, typeof file[0].path, 'выеб фаила')
     const document = await this.documentRepository.create({
       title: 'отсоси мои яички4',
       tags: [],

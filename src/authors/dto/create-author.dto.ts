@@ -1,6 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsOptional, IsString } from 'class-validator';
-import { Min } from 'sequelize-typescript';
+import { IsNumber, IsOptional, IsString, ValidateIf, IsArray } from 'class-validator';
 
 export class CreateAuthorDto {
   @IsString({ message: 'Имя должно быть строкой' })
@@ -11,4 +10,10 @@ export class CreateAuthorDto {
   @IsString()
   @Transform(({ value }) => value.trim())
   biography?: string;
+
+  @IsOptional()
+  @IsArray()
+  @ValidateIf((obj) => Array.isArray(obj))
+  @IsNumber({}, { each: true, message: 'Массив должен состоять только из id' })
+  documents?: number[];
 }

@@ -16,12 +16,17 @@ export class AuthorsService {
   ) {}
 
   async createAuthor(dto: CreateAuthorDto, image: any) {
-    const fileName = await this.fileService.createFile(image);
-    const post = await this.authorRepository.create({
+    const fileName = image?.[0]?.filename
+      ? `static/avatars/${image?.[0]?.filename}`
+      : undefined;
+    const author = await this.authorRepository.create({
       ...dto,
       avatarUrl: fileName,
     });
-    return post;
+    if (dto.documents?.length) {
+      await author.$set('documents', dto.documents);
+    }
+    return author;
   }
 
   async addDocumentsToAuthor(addDocumentDto: AddDocumentDto) {
@@ -44,7 +49,7 @@ export class AuthorsService {
 
   async getAuthors(search?: string) {
     const authors = await this.authorRepository.findAll({
-      where: { fullName: { [Op.iLike]: search ?? '' } },
+      where: { fullName: { [Op.iLike]: `%${search ?? ''}%` } },
       include: [{ all: true }],
     });
     return authors;
