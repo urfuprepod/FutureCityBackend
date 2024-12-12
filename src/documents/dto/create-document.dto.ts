@@ -27,5 +27,6 @@ export class CreateDocumentDto {
   title: string;
   year: string;
   tagIds: string[];
+  location: string;
   futureStatusId: string;
 }

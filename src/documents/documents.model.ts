@@ -39,6 +39,9 @@ export class Document extends Model<Document, DocumentCreationAttr> {
   @Column({ type: DataType.INTEGER, allowNull: false })
   year: number;
 
+  @Column({type: DataType.STRING, allowNull: false})
+  location: string;
+
   @Column({ type: DataType.STRING, allowNull: false })
   file: string;
 

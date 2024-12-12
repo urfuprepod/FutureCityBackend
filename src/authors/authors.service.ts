@@ -6,6 +6,8 @@ import { CreateAuthorDto } from './dto/create-author.dto';
 import { DocumentsService } from 'src/documents/documents.service';
 import { AddDocumentDto } from './dto/add-document.dto';
 import { Op } from 'sequelize';
+import { Document } from 'src/documents/documents.model';
+import { Tag } from 'src/tags/tags.model';
 
 @Injectable()
 export class AuthorsService {
@@ -29,6 +31,20 @@ export class AuthorsService {
     return author;
   }
 
+  async editAuthor(dto: any, id: number, image?: Array<Express.Multer.File>) {
+    const current = await Author.findByPk(id);
+    current.update(dto);
+    if (dto.documents) {
+      current.$set('documents', dto.documents);
+    }
+    console.log(image, 'shag vlevo')
+    if (image?.[0]?.filename) {
+      current.avatarUrl = `static/avatars/${image?.[0]?.filename}`;
+    }
+    await current.save();
+    return current;
+  }
+
   async addDocumentsToAuthor(addDocumentDto: AddDocumentDto) {
     const user = await this.authorRepository.findByPk(addDocumentDto.authorId);
 
@@ -50,7 +66,7 @@ export class AuthorsService {
   async getAuthors(search?: string) {
     const authors = await this.authorRepository.findAll({
       where: { fullName: { [Op.iLike]: `%${search ?? ''}%` } },
-      include: [{ all: true }],
+      include: [{ model: Document, include: [{ model: Tag }] }],
     });
     return authors;
   }

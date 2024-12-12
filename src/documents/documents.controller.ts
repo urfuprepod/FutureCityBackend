@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -22,8 +23,8 @@ export class DocumentsController {
   constructor(private readonly documentService: DocumentsService) {}
 
   @Get()
-  async getDocs(@GetPagination() pagination: Pagination) {
-    return await this.documentService.getDocuments(pagination);
+  async getDocs(@Query('empty') isEmpty: string) {
+    return await this.documentService.getDocuments(!!isEmpty);
   }
 
   @Post('/create')

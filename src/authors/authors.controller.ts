@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Query,
   UploadedFiles,
   UseInterceptors,
@@ -63,5 +64,35 @@ export class AuthorsController {
   @Post('/add-documents')
   addDocumentsToAuthor(@Body() addDocumentDto: AddDocumentDto) {
     return this.authorService.addDocumentsToAuthor(addDocumentDto);
+  }
+
+  @Put('/edit/:id')
+  @UseInterceptors(
+    FilesInterceptor('image', 1, {
+      fileFilter: (_, file, callback) => {
+        const allowed = ['.jpg', '.png', '.jpeg'];
+        const ext = extname(file.originalname);
+        if (!allowed.includes(ext)) {
+          return callback(new Error('Допустимы только картинки'), false);
+        }
+        callback(null, true);
+      },
+      storage: diskStorage({
+        destination: './static/avatars',
+
+        filename: (_, file, cb) => {
+          const ext = extname(file.originalname);
+          const fileName = uuid.v4();
+          cb(null, `${fileName}${ext}`);
+        },
+      }),
+    }),
+  )
+  editAuthor(
+    @Param('id') id: string,
+    @Body() dto: any,
+    @UploadedFiles() image?: Array<Express.Multer.File>,
+  ) {
+    return this.authorService.editAuthor(dto, +id, image);
   }
 }

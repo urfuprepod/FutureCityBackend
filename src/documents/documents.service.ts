@@ -6,6 +6,8 @@ import { Pagination } from 'src/shared/types';
 import { Op } from 'sequelize';
 import { FutureStatusService } from 'src/future-status/future-status.service';
 import { FilesService } from 'src/files/files.service';
+import { Author } from 'src/authors/authors.model';
+import { Tag } from 'src/tags/tags.model';
 
 @Injectable()
 export class DocumentsService {
@@ -15,26 +17,17 @@ export class DocumentsService {
     private fileService: FilesService,
   ) {}
 
-  async getDocuments(params: Pagination, statusId?: number) {
-    const { page, limit, search } = params;
-    // const documents = await this.documentRepository.findAndCountAll({
-    //   // where: {
-    //   //       title: {
-    //   //         [Op.iLike]: search ?? '',
-    //   //       },
-    //   //     },
-    //   include: [{ all: true }],
-    //   offset: 5000,
-    //   limit,
-    // });
-    const documents = await this.documentRepository.findAll();
-    console.log(documents,'deddede')
-    return documents;
+  async getDocuments(isEmpty?: boolean) {
+    const documents = await this.documentRepository.findAll({
+      include: [{ model: Author }, {model: Tag}] ,
+    });
+
+    return documents.filter((el) => !isEmpty || !el.authors.length);
   }
 
-  async createDocument( file: any) {
-    // console.log('жопа', file, dto);
-    // const fileName = await this.fileService.createFile(file);
+  async getDocumentsWithoutAuthor() {}
+
+  async createDocument(file: any) {
     const document = await this.documentRepository.create({
       title: 'отсоси мои яички4',
       tags: [],
