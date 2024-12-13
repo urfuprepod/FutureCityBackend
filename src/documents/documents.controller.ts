@@ -45,8 +45,6 @@ export class DocumentsController {
     @Body() dto: CreateDocumentDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
-    console.log(files);
-    // console.log(createDocumentDto, file, 'мои яйца');
     return await this.documentService.createDocument(dto, files);
   }
 

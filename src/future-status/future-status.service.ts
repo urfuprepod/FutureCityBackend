@@ -32,7 +32,6 @@ export class FutureStatusService {
   }
 
   async getAllStatuses() {
-    console.log('sex')
     const statuses = await this.futureStatusRepository.findAll();
     return statuses;
   }

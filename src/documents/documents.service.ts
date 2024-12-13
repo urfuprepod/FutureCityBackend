@@ -32,7 +32,6 @@ export class DocumentsService {
   async getDocumentsWithoutAuthor() {}
 
   async createDocument(dto: CreateDocumentDto, file: any) {
-    console.log(dto, 'негры');
     const {tagIds, authorIds} = dto;
     const document = await this.documentRepository.create({
       ...dto,
@@ -40,14 +39,13 @@ export class DocumentsService {
       year: +dto.year,
       file: file[0].filename,
     });
-    console.log(typeof authorIds, typeof tagIds)
     if (authorIds) {
       document.$set('authors', typeof authorIds === 'string' ? +authorIds : authorIds.map(el => +el));
     }
     if (tagIds) {
       document.$set('tags', typeof tagIds === 'string' ? +tagIds : tagIds.map(el => +el));
     }
-    const currentStatus = await this.futureStatusService.getStatusById(0);
+    const currentStatus = await this.futureStatusService.getStatusById(+dto.futureStatusId);
     currentStatus.$add('documents', document.id);
     return document;
   }

@@ -5,7 +5,6 @@ import { Pagination } from 'src/shared/types';
 export const GetPagination = createParamDecorator(
   (data, ctx: ExecutionContext): Pagination => {
     const req: Request = ctx.switchToHttp().getRequest();
-    console.log(data,'sumatoha')
 
     const paginationParams: Pagination = {
       page: 1,

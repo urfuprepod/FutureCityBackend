@@ -57,7 +57,6 @@ export class AuthorsController {
     @Body() createAuthorDto: CreateAuthorDto,
     @UploadedFiles() image: Array<Express.Multer.File>,
   ) {
-    console.log(image);
     return this.authorService.createAuthor(createAuthorDto, image);
   }
 

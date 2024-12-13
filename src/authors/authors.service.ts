@@ -71,7 +71,7 @@ export class AuthorsService {
 
   async getAuthorById(id: number) {
     const author = await this.authorRepository.findByPk(id, {
-      include: [{ all: true }],
+      include: [{ all: true }, {model: Document, include: [{all: true}]}],
     });
     return author;
   }
