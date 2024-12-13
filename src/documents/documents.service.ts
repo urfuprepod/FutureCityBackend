@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { Document } from './documents.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { CreateDocumentDto } from './dto/create-document.dto';
-import { Pagination } from 'src/shared/types';
 import { Op } from 'sequelize';
 import { FutureStatusService } from 'src/future-status/future-status.service';
 import { FilesService } from 'src/files/files.service';
 import { Author } from 'src/authors/authors.model';
 import { Tag } from 'src/tags/tags.model';
+import { FutureStatus } from 'src/future-status/future-status.model';
 
 @Injectable()
 export class DocumentsService {
@@ -19,7 +19,11 @@ export class DocumentsService {
 
   async getDocuments(isEmpty?: boolean) {
     const documents = await this.documentRepository.findAll({
-      include: [{ model: Author }, {model: Tag}] ,
+      include: [
+        { model: Author },
+        { model: Tag },
+        { model: FutureStatus, },
+      ],
     });
 
     return documents.filter((el) => !isEmpty || !el.authors.length);
@@ -27,14 +31,22 @@ export class DocumentsService {
 
   async getDocumentsWithoutAuthor() {}
 
-  async createDocument(file: any) {
+  async createDocument(dto: CreateDocumentDto, file: any) {
+    console.log(dto, 'негры');
+    const {tagIds, authorIds} = dto;
     const document = await this.documentRepository.create({
-      title: 'отсоси мои яички4',
-      tags: [],
-      year: 2024,
-      futureStatusId: 0,
+      ...dto,
+      futureStatusId: +dto.futureStatusId,
+      year: +dto.year,
       file: file[0].filename,
     });
+    console.log(typeof authorIds, typeof tagIds)
+    if (authorIds) {
+      document.$set('authors', typeof authorIds === 'string' ? +authorIds : authorIds.map(el => +el));
+    }
+    if (tagIds) {
+      document.$set('tags', typeof tagIds === 'string' ? +tagIds : tagIds.map(el => +el));
+    }
     const currentStatus = await this.futureStatusService.getStatusById(0);
     currentStatus.$add('documents', document.id);
     return document;

@@ -19,6 +19,7 @@ interface DocumentCreationAttr {
   year: number;
   tags: number[];
   file: string;
+  location: string;
   futureStatusId: number;
   authorsIds?: number[];
 }
@@ -33,7 +34,7 @@ export class Document extends Model<Document, DocumentCreationAttr> {
   })
   id: number;
 
-  @Column({ type: DataType.STRING, unique: true, allowNull: false })
+  @Column({ type: DataType.STRING, allowNull: false })
   title: string;
 
   @Column({ type: DataType.INTEGER, allowNull: false })

@@ -37,7 +37,6 @@ export class AuthorsService {
     if (dto.documents) {
       current.$set('documents', dto.documents);
     }
-    console.log(image, 'shag vlevo')
     if (image?.[0]?.filename) {
       current.avatarUrl = `static/avatars/${image?.[0]?.filename}`;
     }
@@ -55,7 +54,6 @@ export class AuthorsService {
     const documents = await this.documentService.getDocumentByIds(documentsIds);
 
     if (user) {
-      //  user.update({ roles: [...user.roles, currentRole] });
       await user.$add('documents', [...documents.map((el) => el.id)]);
 
       return await user.save();

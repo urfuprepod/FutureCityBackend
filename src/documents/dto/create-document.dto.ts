@@ -29,4 +29,5 @@ export class CreateDocumentDto {
   tagIds: string[];
   location: string;
   futureStatusId: string;
+  authorIds: string[];
 }
